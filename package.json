@@ -9,19 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@livekit/agents": "^0.7.7",
     "@livekit/components-react": "^2.9.13",
     "@livekit/components-styles": "^1.1.6",
+    "@livekit/protocol": "^1.39.3",
+    "@livekit/rtc-node": "^0.13.17",
     "@types/bcryptjs": "^2.4.6",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
     "bcryptjs": "^3.0.2",
     "konva": "^9.3.20",
     "livekit-client": "^2.15.2",
     "mongoose": "^8.16.0",
     "next": "15.3.3",
     "next-auth": "^4.24.11",
+    "openai": "^5.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-konva": "^19.0.5",
-    "tldraw": "^3.13.4"
+    "tldraw": "^3.13.4",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
