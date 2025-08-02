@@ -1,131 +1,160 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-export default function LandingPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+// Re-using the same great icons
+const CollaborateIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+);
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dashboard');
-    }
-  }, [status, router]);
+const AIIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 16.84c.425-.219.751-.69.826-1.212C10.593 14.943 11 14.25_11 13.5c0-.966-.394-1.84-1.03-2.478C9.278 10.323 8.423 10 7.5 10c-.923 0-1.778.323-2.47.922C4.394 11.66 4 12.534 4 13.5c0 .75.407 1.443.51 2.128.075.522.401.993.826 1.212" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 8.5c.69 0 1.25.56 1.25 1.25S17.19 11 16.5 11h-9c-.69 0-1.25-.56-1.25-1.25S6.81 8.5 7.5 8.5h9z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M18 20a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h12z" />
+    </svg>
+);
 
-  if (status === 'loading') {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+const ChatIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+);
 
+// Animation Variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </div>
-            <h1 className="text-xl font-bold text-gray-800">AI Whiteboard</h1>
-          </div>
-          
-          <div className="space-x-4">
-            <Link href="/login" className="px-4 py-2 text-blue-600 hover:text-blue-800">
-              Sign In
-            </Link>
-            <Link href="/register" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              Get Started
-            </Link>
-          </div>
+    <div data-theme="dark" className="bg-gradient-animation">
+      {/* Navbar */}
+      <motion.div
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="navbar bg-base-100/30 backdrop-blur-lg shadow-lg fixed top-0 z-50"
+      >
+        <div className="flex-1">
+          <a className="btn btn-ghost normal-case text-xl">SmartBoard</a>
         </div>
-      </nav>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li><Link href="#features">Features</Link></li>
+            <li><Link href="#how-it-works">How It Works</Link></li>
+          </ul>
+           <Link href="/login" className="btn btn-ghost">
+                Login
+            </Link>
+          <Link href="/register" className="btn btn-primary ml-2">
+            Sign Up
+          </Link>
+        </div>
+      </motion.div>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            AI-Powered Collaborative Whiteboard
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Perfect for researchers, students, and teachers. Real-time collaboration with intelligent AI assistance.
-          </p>
-          
-          <div className="flex justify-center space-x-4 mb-12">
-            <Link href="/register" className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
-              Start Free Session
-            </Link>
-            <Link href="/login" className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
-              Sign In
-            </Link>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">AI Teaching Assistant</h3>
-            <p className="text-gray-600">
-              Get instant explanations, diagram analysis, and educational insights powered by advanced AI.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Real-time Collaboration</h3>
-            <p className="text-gray-600">
-              Multiple users can draw, write, and interact simultaneously with live cursor tracking.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Educational Focus</h3>
-            <p className="text-gray-600">
-              Designed specifically for academic environments with tools for teaching and learning.
-            </p>
-          </div>
-        </div>
-
-        {/* Use Cases */}
-        <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12">Perfect For</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">👩‍🏫 Teachers</h3>
-              <p className="text-gray-600">Interactive lessons, visual explanations, and student collaboration</p>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">👨‍🎓 Students</h3>
-              <p className="text-gray-600">Study groups, project collaboration, and AI-assisted learning</p>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">🔬 Researchers</h3>
-              <p className="text-gray-600">Brainstorming sessions, diagram creation, and team discussions</p>
-            </div>
-          </div>
+      <div className="hero min-h-screen">
+        <div className="hero-overlay bg-opacity-10"></div>
+        <div className="hero-content text-center text-neutral-content">
+          <motion.div
+            className="max-w-md"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h1 variants={fadeIn} className="mb-5 text-5xl font-bold">Collaborate Without Limits</motion.h1>
+            <motion.p variants={fadeIn} className="mb-5">The intelligent whiteboard for teams that think big. Brainstorm, plan, and create together in real-time with the power of AI.</motion.p>
+            <motion.div variants={fadeIn}>
+              <Link href="/room" className="btn btn-primary btn-lg">Create a Whiteboard</Link>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
+
+      {/* Features Section */}
+      <motion.div
+        id="features"
+        className="container mx-auto px-4 py-24 text-center"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={staggerContainer}
+      >
+        <motion.h2 variants={fadeIn} className="text-4xl font-bold mb-2">Everything You Need to Collaborate</motion.h2>
+        <motion.p variants={fadeIn} className="text-lg mb-12 text-gray-400">All in one shared workspace.</motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div variants={fadeIn} className="card bg-base-100/30 shadow-xl backdrop-blur-sm">
+            <div className="card-body">
+              <CollaborateIcon />
+              <h3 className="card-title justify-center text-2xl font-bold">Real-Time Sync</h3>
+              <p>Draw and brainstorm with your team. Every stroke is synced instantly across all devices.</p>
+            </div>
+          </motion.div>
+          <motion.div variants={fadeIn} className="card bg-base-100/30 shadow-xl backdrop-blur-sm">
+            <div className="card-body">
+              <AIIcon />
+              <h3 className="card-title justify-center text-2xl font-bold">AI Assistant</h3>
+              <p>Supercharge your creativity. Our AI can analyze your drawings, suggest ideas, and automate tasks.</p>
+            </div>
+          </motion.div>
+          <motion.div variants={fadeIn} className="card bg-base-100/30 shadow-xl backdrop-blur-sm">
+            <div className="card-body">
+              <ChatIcon />
+              <h3 className="card-title justify-center text-2xl font-bold">Integrated Chat</h3>
+              <p>Communicate seamlessly with your team without leaving the board. Discuss ideas as they happen.</p>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* How It Works Section */}
+      <div id="how-it-works" className="py-24">
+        <div className="container mx-auto px-4 text-center">
+            <h2 className="text-4xl font-bold mb-12">Get Started in Seconds</h2>
+            <ul className="steps steps-vertical lg:steps-horizontal w-full">
+                <li data-content="✓" className="step step-primary">Create a Room</li>
+                <li data-content="✓" className="step step-primary">Share the Link</li>
+                <li data-content="★" className="step step-primary">Start Collaborating</li>
+                <li data-content="🚀" className="step">Unleash Your Ideas</li>
+            </ul>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="footer p-10 bg-base-200 text-base-content">
+        <div>
+          <span className="footer-title">SmartBoard</span>
+          <p>Redefining online collaboration.<br/>© 2025 SmartBoard Inc. All rights reserved.</p>
+        </div>
+        <div>
+          <span className="footer-title">Product</span>
+          <a className="link link-hover">Features</a>
+          <a className="link link-hover">Pricing</a>
+          <a className="link link-hover">Changelog</a>
+        </div>
+        <div>
+          <span className="footer-title">Company</span>
+          <a className="link link-hover">About us</a>
+          <a className="link link-hover">Contact</a>
+          <a className="link link-hover">Careers</a>
+        </div>
+      </footer>
     </div>
   );
 }

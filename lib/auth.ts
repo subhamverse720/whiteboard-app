@@ -12,7 +12,7 @@ import bcrypt from "bcryptjs";
         name:'Credentials',
         credentials: {
         email:{label :"Email", type:"text"},
-        password: {label: "passwprd" , type:"password"} 
+        password: {label: "Password" , type:"password"} 
      },
     async authorize(credentials) {
          if (!credentials?.email || !credentials?.password) {
